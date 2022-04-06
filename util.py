@@ -1,6 +1,7 @@
 from pyyoutube import Api, SearchResult
 from os import getenv
 from time import sleep
+import re
 from tweepy import API, OAuth1UserHandler
 from datetime import datetime, timedelta, timezone
 
@@ -30,5 +31,19 @@ def update_status(videos: list[SearchResult]):
 	print(f'[{datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}] Updating Twitter status')
 
 	for video in videos:
+		if is_false_positive(video):
+			print(f'[{datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}] Skipping false positive')
+			continue
+
 		twitter.update_status(f'Found new reaction: "{video.snippet.title}" by {video.snippet.channelTitle}\n#PTX #Pentatonix\nhttps://youtu.be/{video.id.videoId}')
 		if len(videos) > 1: sleep(5)
+
+	print(f'[{datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}] Status updated')
+
+def is_false_positive(video: SearchResult):
+	if any(re.findall(r'ptx|pentatonix', video.snippet.title, re.IGNORECASE)):
+		print(f'[{datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}] Verified result')
+		return False
+	else:
+		print(f'[{datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}] Identified false positive')
+		return True
