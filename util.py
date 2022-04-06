@@ -1,0 +1,34 @@
+from pyyoutube import Api, SearchResult
+from os import getenv
+from time import sleep
+from tweepy import API, OAuth1UserHandler
+from datetime import datetime, timedelta, timezone
+
+def search_videos():
+	yt = Api(api_key=getenv('google_api_key'))
+	search_time = datetime.now(timezone.utc) - timedelta(minutes=15)
+
+	results = yt.search(
+    	q='pentatonix reaction',
+    	parts='snippet',
+   		count=25,
+    	published_after=search_time.isoformat(),
+    	safe_search='moderate',
+    	search_type='video')
+
+	if len(results.items) == 0:
+		print(f'[{datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}] Found no results')
+		return None
+
+	print(f'[{datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}] Found {len(results.items)} result(s)')
+	return results.items
+
+def update_status(videos: list[SearchResult]):
+	auth = OAuth1UserHandler(getenv('consumer_key'), getenv('consumer_secret'), getenv('token'), getenv('secret'))
+	twitter = API(auth)
+
+	print(f'[{datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}] Updating Twitter status')
+
+	for video in videos:
+		twitter.update_status(f'Found new reaction: "{video.snippet.title}" by {video.snippet.channelTitle}\n#PTX #Pentatonix\nhttps://youtu.be/{video.id.videoId}')
+		if len(videos) > 1: sleep(5)
