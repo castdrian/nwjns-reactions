@@ -35,7 +35,8 @@ def update_status(videos: list[SearchResult]):
 			print(f'[{datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}] Skipping false positive')
 			continue
 
-		twitter.update_status(f'Found new reaction: "{video.snippet.title.replace("&quot;", "\"").replace("&amp;", "&")}" by {video.snippet.channelTitle}\n#PTX #Pentatonix\nhttps://youtu.be/{video.id.videoId}')
+		title = video.snippet.title.replace("&quot;", "\"").replace("&amp;", "&")
+		twitter.update_status(f'Found new reaction: "{title}" by {video.snippet.channelTitle}\n#PTX #Pentatonix\nhttps://youtu.be/{video.id.videoId}')
 		if len(videos) > 1: sleep(5)
 
 	print(f'[{datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}] Status updated')
