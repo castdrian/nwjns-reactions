@@ -1,13 +1,14 @@
 from pyyoutube import Api, SearchResult
 from os import getenv
 from time import sleep
-import re
+from re import findall, IGNORECASE
 from tweepy import API, OAuth1UserHandler
 from datetime import datetime, timedelta, timezone
+from pickledb import load
 
 def search_videos():
 	yt = Api(api_key=getenv('google_api_key'))
-	search_time = datetime.now(timezone.utc) - timedelta(minutes=15)
+	search_time = datetime.now(timezone.utc) - timedelta(minutes=20)
 
 	results = yt.search(
     	q='pentatonix reaction',
@@ -35,18 +36,37 @@ def update_status(videos: list[SearchResult]):
 			log('Skipping false positive')
 			continue
 
+		if is_duplicate(video):
+			log('Skipping duplicate')
+			continue
+
 		twitter.update_status(f'Found new reaction: "{escape_formatting(video.snippet.title)}" by {video.snippet.channelTitle}\n#PTX #Pentatonix\nhttps://youtu.be/{video.id.videoId}')
 		if len(videos) > 1: sleep(5)
 
 	log('Status updated')
 
 def is_false_positive(video: SearchResult):
-	if any(re.findall(r'ptx|pentatonix', video.snippet.title, re.IGNORECASE)):
+	if any(findall(r'ptx|pentatonix', video.snippet.title, IGNORECASE)):
 		log('Verified result')
 		return False
 	else:
 		log('Identified false positive')
 		return True
+
+def is_duplicate(video: SearchResult):
+	log('Checking for duplicate')
+	db = load('videos.db', False)
+
+	if video.id.videoId in db.getall():
+		log('Found duplicate')
+		return True
+	else:
+		log('No duplicate found')
+		log('Adding video to database')
+		db.set(video.id.videoId, True)
+		db.dump()
+		log('Video added to database')
+		return False
 
 def escape_formatting(text: str):
 	return text.replace("&quot;", "\"").replace("&amp;", "&").replace("&#39;", "'")
