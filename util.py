@@ -35,8 +35,7 @@ def update_status(videos: list[SearchResult]):
 			print(f'[{datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}] Skipping false positive')
 			continue
 
-		title = video.snippet.title.replace("&quot;", "\"").replace("&amp;", "&")
-		twitter.update_status(f'Found new reaction: "{title}" by {video.snippet.channelTitle}\n#PTX #Pentatonix\nhttps://youtu.be/{video.id.videoId}')
+		twitter.update_status(f'Found new reaction: "{escape_formatting(video.snippet.title)}" by {video.snippet.channelTitle}\n#PTX #Pentatonix\nhttps://youtu.be/{video.id.videoId}')
 		if len(videos) > 1: sleep(5)
 
 	print(f'[{datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}] Status updated')
@@ -48,3 +47,6 @@ def is_false_positive(video: SearchResult):
 	else:
 		print(f'[{datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}] Identified false positive')
 		return True
+
+def escape_formatting(text: str):
+	return text.replace("&quot;", "\"").replace("&amp;", "&").replace("&#39;", "'")
