@@ -46,7 +46,7 @@ def update_status(videos: list[SearchResult]):
 	log('Status updated')
 
 def is_false_positive(video: SearchResult):
-	if any(findall(r'ptx|pentatonix', video.snippet.title, IGNORECASE)):
+	if any(findall(r'ptx|pentatonix', video.snippet.title, IGNORECASE)) & any(findall(r'react', video.snippet.title, IGNORECASE)):
 		log('Verified result')
 		return False
 	else:
