@@ -1,5 +1,4 @@
 from dotenv import load_dotenv
-from datetime import datetime
 from util import log, search_videos, update_status
 from schedule import every, run_pending
 from time import sleep
