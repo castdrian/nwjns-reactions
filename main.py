@@ -13,12 +13,11 @@ def cycle():
 
 	log('Cycle complete')
 
-# Initial cycle
-log('Starting initial cycle')
-cycle()
-
-# Schedule cycle
-every(15).minutes.do(cycle)
+# Schedule cycle every quarter hour
+every().hour.at(":00").do(cycle)
+every().hour.at(":15").do(cycle)
+every().hour.at(":30").do(cycle)
+every().hour.at(":45").do(cycle)
 
 while True:
 	try:
