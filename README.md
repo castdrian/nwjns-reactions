@@ -1,6 +1,6 @@
-# ptxreactions
-Recurring Twitter updates for newly posted PTX reaction videos
+# NewJeans Reactions
+Recurring Twitter updates for newly posted NewJeans reaction videos
 
-https://twitter.com/reactions_ptx
+https://twitter.com/nwjnsreactions
 
 Donate: https://paypal.me/adrifcastr

@@ -13,8 +13,16 @@ def cycle():
 
 	log('Cycle complete')
 
+# Initial cycle
+log('Starting initial cycle')
+cycle()
+
+# Schedule cycle
 every(15).minutes.do(cycle)
 
 while True:
-    run_pending()
-    sleep(1)
+	try:
+		run_pending()
+		sleep(1)
+	except Exception as e:
+		log('Error: ' + str(e))

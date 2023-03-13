@@ -11,7 +11,7 @@ def search_videos():
 	search_time = datetime.now(timezone.utc) - timedelta(minutes=20)
 
 	results = yt.search(
-    	q='pentatonix reaction',
+    	q='newjeans reaction',
     	parts='snippet',
    		count=25,
     	published_after=search_time.isoformat(),
@@ -40,13 +40,13 @@ def update_status(videos: list[SearchResult]):
 			log('Skipping duplicate')
 			continue
 
-		twitter.update_status(f'Found new reaction: "{escape_formatting(video.snippet.title)}" by {video.snippet.channelTitle}\n#PTX #Pentatonix\nhttps://youtu.be/{video.id.videoId}')
+		twitter.update_status(f'Found new reaction: "{escape_formatting(video.snippet.title)}" by {video.snippet.channelTitle}\n#NewJeans #뉴진스\n#HANNI #HAERIN #MINJI #DANIELLE #HYEIN\n#하니 #해린 #민지 #다니엘 #혜인\nhttps://youtu.be/{video.id.videoId}')
 		if len(videos) > 1: sleep(5)
 
 	log('Status updated')
 
 def is_false_positive(video: SearchResult):
-	if any(findall(r'ptx|pentatonix', video.snippet.title, IGNORECASE)) & any(findall(r'react|hear|listen', video.snippet.title, IGNORECASE)):
+	if any(findall(r'newjeans|뉴진스|jeans', video.snippet.title, IGNORECASE)) & any(findall(r'react|hear|listen|watch', video.snippet.title, IGNORECASE)):
 		log('Verified result')
 		return False
 	else:
