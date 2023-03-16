@@ -2,6 +2,7 @@ from pyyoutube import Api, SearchResult
 from os import getenv
 from time import sleep
 from re import findall, IGNORECASE
+from requests import get
 from tweepy import API, OAuth1UserHandler
 from datetime import datetime, timedelta, timezone
 from pickledb import load
@@ -40,7 +41,7 @@ def update_status(videos: list[SearchResult]):
 			log('Skipping duplicate')
 			continue
 
-		twitter.update_status(f'Found new reaction: "{escape_formatting(video.snippet.title)}" by {video.snippet.channelTitle}\n#NewJeans #뉴진스\n#HANNI #HAERIN #MINJI #DANIELLE #HYEIN\n#하니 #해린 #민지 #다니엘 #혜인\nhttps://youtu.be/{video.id.videoId}')
+		twitter.update_status(f'Found new reaction: "{escape_formatting(video.snippet.title)}" by {resolve_twitter_handle(video.snippet.channelId, video.snippet.channelTitle)}\n#NewJeans #뉴진스\n#HANNI #HAERIN #MINJI #DANIELLE #HYEIN\n#하니 #해린 #민지 #다니엘 #혜인\nhttps://youtu.be/{video.id.videoId}')
 		if len(videos) > 1: sleep(5)
 
 	log('Status updated')
@@ -70,6 +71,24 @@ def is_duplicate(video: SearchResult):
 
 def escape_formatting(text: str):
 	return text.replace("&quot;", "\"").replace("&amp;", "&").replace("&#39;", "'")
+
+def resolve_twitter_handle(channel_id: str, channel_name: str):
+	try:
+		# fetch config.json from github
+		response = get('https://raw.githubusercontent.com/castdrian/nwjns-reactions/main/config.json')
+		response.raise_for_status()
+
+		# parse config.json
+		config = response.json()
+		for channel in config['channels']:
+			if channel['id'] == channel_id:
+				return channel['twitter_handle']
+			
+		return channel_name
+	
+	except Exception as e:
+		log('Error: ' + str(e))
+		return channel_name
 
 def log(message: str):
 	print(f'[{datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}] {message}')
