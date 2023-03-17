@@ -41,6 +41,10 @@ def update_status(videos: list[SearchResult]):
 			log('Skipping duplicate')
 			continue
 
+		if is_ignored(video.snippet.channelId):
+			log('Skipping ignored channel')
+			continue
+
 		twitter.update_status(f'Found new reaction: "{escape_formatting(video.snippet.title)}" by {resolve_twitter_handle(video.snippet.channelId, video.snippet.channelTitle)}\n#NewJeans #뉴진스\n#HANNI #HAERIN #MINJI #DANIELLE #HYEIN\n#하니 #해린 #민지 #다니엘 #혜인\nhttps://youtu.be/{video.id.videoId}')
 		if len(videos) > 1: sleep(5)
 
@@ -67,6 +71,24 @@ def is_duplicate(video: SearchResult):
 		db.set(video.id.videoId, True)
 		db.dump()
 		log('Video added to database')
+		return False
+	
+def is_ignored(channel_id: str):
+	try:
+		# fetch config.json from github
+		response = get('https://raw.githubusercontent.com/castdrian/nwjns-reactions/main/config.json')
+		response.raise_for_status()
+
+		# parse config.json
+		config = response.json()
+		for channel in config['ignored']:
+			if channel == channel_id:
+				return True
+			
+		return False
+	
+	except Exception as e:
+		log('Error: ' + str(e))
 		return False
 
 def escape_formatting(text: str):
