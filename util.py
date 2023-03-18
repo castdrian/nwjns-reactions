@@ -74,6 +74,7 @@ def is_duplicate(video: SearchResult):
 		return False
 	
 def is_ignored(channel_id: str):
+	log('Checking if channel is ignored')
 	try:
 		# fetch config.json from github
 		response = get('https://raw.githubusercontent.com/castdrian/nwjns-reactions/main/config.json')
@@ -83,8 +84,10 @@ def is_ignored(channel_id: str):
 		config = response.json()
 		for channel in config['ignored']:
 			if channel == channel_id:
+				log('Channel is ignored')
 				return True
 			
+		log('Channel is not ignored')
 		return False
 	
 	except Exception as e:
@@ -96,6 +99,7 @@ def escape_formatting(text: str):
 
 def resolve_twitter_handle(channel_id: str, channel_name: str):
 	try:
+		log('Resolving Twitter handle')
 		# fetch config.json from github
 		response = get('https://raw.githubusercontent.com/castdrian/nwjns-reactions/main/config.json')
 		response.raise_for_status()
@@ -104,8 +108,10 @@ def resolve_twitter_handle(channel_id: str, channel_name: str):
 		config = response.json()
 		for channel in config['channels']:
 			if channel['id'] == channel_id:
+				log(f'Found Twitter handle for id: {channel_id}')
 				return channel['twitter_handle']
 			
+		log(f'No Twitter handle found for id: {channel_id}')
 		return channel_name
 	
 	except Exception as e:
