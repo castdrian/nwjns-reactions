@@ -1,32 +1,14 @@
 {
 	"channels": [
-		{
-			"id": "UCv1oRRVXOOfjV0rLW-GYGAA", "twitter_handle": "@EmilySReacts"
-		},
-		{
-			"id": "UC2xbhSIpUAH3vzkIfNlfHnw", "twitter_handle": "@JamieIsLazy"
-		},
-		{
-			"id": "UCxepGgZ3AMZIHLlFDfG3SLA", "twitter_handle": "@paradigmreacts"
-		},
-		{
-			"id": "UC7RxPK1cC9w-rxg3FuXN3aw", "twitter_handle": "@x_caitlyn_"
-		},
-		{
-			"id": "UCh_9e6sTlrcWrA8-vTBvCnQ", "twitter_handle": "@Erika__Justine"
-		},
-  		{
-			"id": "UCrONoGe0vU2gxjSJuZiNvOg", "twitter_handle": "@OGzReacts"
-		},
-		{
-			"id": "UCmqX59UZZsF7VZ6gnZXYcIg", "twitter_handle": "@redMBers"
-		},
-		{
-			"id": "UCWir57ofdt8Ye10byEm0sVg", "twitter_handle": "@ohmysweetsuga"
-		},
-		{
-			"id": "UCaDacvTqt1kufdRNAaypl7A", "twitter_handle": "@dxwxt1"
-		}
+		{ "id": "UCv1oRRVXOOfjV0rLW-GYGAA", "twitter_handle": "@EmilySReacts" },
+		{ "id": "UC2xbhSIpUAH3vzkIfNlfHnw", "twitter_handle": "@JamieIsLazy" },
+		{ "id": "UCxepGgZ3AMZIHLlFDfG3SLA", "twitter_handle": "@paradigmreacts" },
+		{ "id": "UC7RxPK1cC9w-rxg3FuXN3aw", "twitter_handle": "@x_caitlyn_" },
+		{ "id": "UCMjh93_Hn4jpSIJpC2VTLMw", "twitter_handle": "@Erika__Justine" },
+  		{ "id": "UCrONoGe0vU2gxjSJuZiNvOg", "twitter_handle": "@OGzReacts" },
+		{ "id": "UCmqX59UZZsF7VZ6gnZXYcIg", "twitter_handle": "@redMBers" },
+		{ "id": "UCWir57ofdt8Ye10byEm0sVg", "twitter_handle": "@ohmysweetsuga" },
+		{ "id": "UCaDacvTqt1kufdRNAaypl7A", "twitter_handle": "@dxwxt1" }
 	],
 	"ignored": [
 		"UCC1SjS-Krx2Peuew3cUS8vQ", 
